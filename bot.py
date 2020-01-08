@@ -9,26 +9,16 @@ driver = webdriver.Chrome('C:/Windows/chromedriver.exe')
 
 conexion = mysql.connector.connect(host='localhost',database='aztecaseo',user='root',password='')
 cursor = conexion.cursor()
-#pagina para ingresar
-# xpaht boton submit recaptcha //*[@id="recaptcha_submit"]
-#xpaht boton on page seo Checker /html/body/div[2]/div[4]/div/div[2]/div/div[2]/div/div[2]/div[1]/a[4]
-#enlace botn on page seo Checker https://www.semrush.com/on-page-seo-checker/2234267/overview/
+#pagina para ingresar (id)
 id_campana = "6"
 driver.get("https://www.semrush.com/")
-#username y password pasar a diccionanrio segun cuenta pasar a diccionario
 datoscamp = "SELECT * FROM campana WHERE id_campana ="+id_campana
 cursed = conexion.cursor(buffered=True)
 cursed.execute(datoscamp)
 records = cursed.fetchall()
-print("Total rows are:  ", len(records))
-print("Printing each row")
 for row in records:
-    print("pos: "+ str(row[24]))
-    print("pos: "+ str(row[25]))
-
-    print("\n")
     conexion.commit()
-
+    #username y password
     user_name = str(row[24])
     password = str(row[25])
     #login user y pass
@@ -38,15 +28,11 @@ for row in records:
     elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-password']")
     elem.send_keys(password)
     elem = driver.find_element_by_xpath("//*[@data-test='login-page__btn-login']").click()
+    time.sleep(2)
+    urlcambiar= str(row[26])
+    driver.get("https://www.semrush.com/tracking/landscape/"+urlcambiar+".html")
 
 cursed.close()
-
-
-time.sleep(2)
-#elem = driver.find_element_by_xpath("//*[@data-test='base-popup-close']").click()
-urlcambiar= "2234267"
-driver.get("https://www.semrush.com/tracking/landscape/"+urlcambiar+".html")
-#elem = driver.find_element_by_xpath("/html/body/main/div/div[2]/div[2]/div[1]/div[6]/div/div[1]/div[2]/table/tbody/tr[3]/td[1]/a").click()
 elem = driver.find_element_by_xpath('//*[@id="root-content"]/div[3]/div/div[2]/div[5]/ul/li[2]/a').click()
 time.sleep(3)
 
@@ -150,12 +136,6 @@ while aux <= cantitask:
         strategylen = str(len(strategy))
         print("esto es algo> "+strategylen)
         strategytext = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div[2]/div[2]/div/div/div/ul/li[1]/div[2]/span['+strategylen+']')
-
-        #print(strategytext.text)
-
-
         ciclo = ciclo + 1
-
-
     print ("Valor actual de la variable : " + var1task.text + "Frase: " + var2task.text)
 print ("fin del script")
