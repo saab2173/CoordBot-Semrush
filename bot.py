@@ -13,18 +13,35 @@ cursor = conexion.cursor()
 # xpaht boton submit recaptcha //*[@id="recaptcha_submit"]
 #xpaht boton on page seo Checker /html/body/div[2]/div[4]/div/div[2]/div/div[2]/div/div[2]/div[1]/a[4]
 #enlace botn on page seo Checker https://www.semrush.com/on-page-seo-checker/2234267/overview/
-
+id_campana = "6"
 driver.get("https://www.semrush.com/")
 #username y password pasar a diccionanrio segun cuenta pasar a diccionario
-user_name = "info@quickcleanchicago.com"
-password = "newpp2020bx"
-#login user y pass
-elem = driver.find_element_by_xpath("//*[@data-test='auth-popup__btn-login']").click()
-elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-email']")
-elem.send_keys(user_name)
-elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-password']")
-elem.send_keys(password)
-elem = driver.find_element_by_xpath("//*[@data-test='login-page__btn-login']").click()
+datoscamp = "SELECT * FROM campana WHERE id_campana ="+id_campana
+cursed = conexion.cursor(buffered=True)
+cursed.execute(datoscamp)
+records = cursed.fetchall()
+print("Total rows are:  ", len(records))
+print("Printing each row")
+for row in records:
+    print("pos: "+ str(row[24]))
+    print("pos: "+ str(row[25]))
+
+    print("\n")
+    conexion.commit()
+
+    user_name = str(row[24])
+    password = str(row[25])
+    #login user y pass
+    elem = driver.find_element_by_xpath("//*[@data-test='auth-popup__btn-login']").click()
+    elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-email']")
+    elem.send_keys(user_name)
+    elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-password']")
+    elem.send_keys(password)
+    elem = driver.find_element_by_xpath("//*[@data-test='login-page__btn-login']").click()
+
+cursed.close()
+
+
 time.sleep(2)
 #elem = driver.find_element_by_xpath("//*[@data-test='base-popup-close']").click()
 urlcambiar= "2234267"
