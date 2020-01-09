@@ -11,7 +11,7 @@ conexion = mysql.connector.connect(host='localhost',database='aztecaseo',user='r
 cursor = conexion.cursor()
 #pagina para ingresar (id)
 id_campana = "6"
-driver.get("https://www.semrush.com/")
+driver.get("https://www.semrush.com/login/")
 datoscamp = "SELECT * FROM campana WHERE id_campana ="+id_campana
 cursed = conexion.cursor(buffered=True)
 cursed.execute(datoscamp)
@@ -22,7 +22,6 @@ for row in records:
     user_name = str(row[24])
     password = str(row[25])
     #login user y pass
-    elem = driver.find_element_by_xpath("//*[@data-test='auth-popup__btn-login']").click()
     elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-email']")
     elem.send_keys(user_name)
     elem = driver.find_element_by_xpath("//*[@data-test='login-page__input-password']")
@@ -120,6 +119,7 @@ while aux <= cantitask:
         print("url: "+ str(row[4]))
         print("\n")
         id_trakbd = str(row[0])
+
         insertoorders = "INSERT INTO ordenes(id_orden, frase_objetiva, tipo_orden, sin1, sin2, sin3, sin4, id_camp, fechaini, fechafinal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = ("null",id_trakbd,1,"sin","sin","sin","sin",6,"2020-01-07","2020-01-07")
         cursor.execute(insertoorders,val)
@@ -127,15 +127,35 @@ while aux <= cantitask:
         print("Frase clave agregada con exito")
 
     cursed.close()
-    ciclo = 1
-    while ciclo <= cantitask:
-        ciclotext = str(ciclo)
-        ideas = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div[4]/div/div/table/tbody[2]/tr[1]/td[6]/div/button').click()
-        time.sleep(4)
-        strategy = driver.find_elements_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div[2]/div[2]/div/div/div/ul/li[1]/div[2]')
-        strategylen = str(len(strategy))
-        print("esto es algo> "+strategylen)
-        strategytext = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div[2]/div[2]/div/div/div/ul/li[1]/div[2]/span['+strategylen+']')
-        ciclo = ciclo + 1
-    print ("Valor actual de la variable : " + var1task.text + "Frase: " + var2task.text)
-print ("fin del script")
+    time.sleep(5)
+
+tbodyseoc = driver.find_elements_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div[4]/div/div/table/tbody[2]/tr')
+
+ctbodyseoc = len(tbodyseoc)
+print(ctbodyseoc)
+for i in range(1,ctbodyseoc+1):
+    vari = str(i)
+    buttonideas = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div[4]/div/div/table/tbody[2]/tr['+vari+']/td[6]/div/button').click()
+    time.sleep(5)
+    backtof = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/a/button').click()
+    time.sleep(5)
+print("Fin del Script")
+
+
+
+
+# ideas = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[2]/div/div[2]/div[5]/ul/li[4]/a').click()
+# time.sleep(4)
+# strategy = driver.find_elements_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div/div[2]/div/table/tbody/tr')
+# strategylen = len(strategy)
+# print(strategylen)
+# for i in range(1,strategylen+1):
+#     vari = str(i)
+#     strategyclick = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/div/div[2]/div/table/tbody/tr['+vari+']/td[3]/div/span/a[1]').click()
+#     time.sleep(5)
+#     backtof = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[3]/div/a/button').click()
+#     time.sleep(2)
+#     ideas = driver.find_element_by_xpath('/html/body/main/div/div[2]/div[1]/div/div[2]/div/div[2]/div[5]/ul/li[4]/a').click()
+#     time.sleep(5)
+#
+# print("Fin del Script")
