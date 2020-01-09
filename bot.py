@@ -3,7 +3,6 @@ import time
 import mysql.connector
 import datetime
 
-
 from selenium.webdriver.common.keys import Keys
 driver = webdriver.Chrome('C:/Windows/chromedriver.exe')
 
